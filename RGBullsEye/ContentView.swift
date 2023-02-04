@@ -39,14 +39,14 @@ struct ContentView: View {
     @State var showScore = false
   var body: some View {
       VStack{
-          ColorCircle(rgb:game.target)
+          ColorCircle(rgb:game.target, size: 250)
           if !showScore {
               Text("R: ??? G: ??? B: ???")
           }else{
               Text(guess.intString())
                   .padding()
           }
-          ColorCircle(rgb: guess)
+          ColorCircle(rgb: guess, size: 250)
           Text(
             "R: \(Int(guess.red * 255.0))"
             + "  R: \(Int(guess.green * 255.0))"
@@ -73,6 +73,11 @@ struct ContentView: View {
               }
               )
           }
+          .frame(width: 327, height: 48)
+          .background(
+            Capsule().fill(Color.element)
+                .northWestShadow()
+          )
           
       }
       
@@ -86,14 +91,7 @@ struct ContentView_Previews: PreviewProvider {
   }
 }
 
-struct ColorCircle:View{
-    var rgb:RGB
-    var body: some View {
-        Circle().fill(
-        Color(rgbStruct: rgb)
-        )
-    }
-}
+
 
 struct ColorSlider: View {
     @Binding var value: Double

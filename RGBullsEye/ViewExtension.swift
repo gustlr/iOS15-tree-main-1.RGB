@@ -1,4 +1,4 @@
-/// Copyright (c) 2021 Razeware LLC
+/// Copyright (c) 2023 Razeware LLC
 /// 
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -30,17 +30,29 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 
-import Foundation
 import SwiftUI
 
-extension Color {
-  /// Create a Color view from an RGB object.
-  ///   - parameters:
-  ///     - rgb: The RGB object.
-    static let element = Color("Element")
-    static let hightlight = Color("Highlight")
-    static let shadow = Color("Shadow")
-  init(rgbStruct rgb: RGB) {
-    self.init(red: rgb.red, green: rgb.green, blue: rgb.blue)
-  }
+extension View {
+    func northWestShadow(
+        radius: CGFloat = 16,
+        offset: CGFloat = 6
+    ) -> some View {
+        return self
+        .shadow(
+            color: .hightlight, radius: radius, x: -offset, y: -offset
+        )
+        .shadow(
+            color: .shadow, radius: radius, x: offset, y: offset
+        )
+    }
+    func southwEastShadow(
+radius: CGFloat = 16,
+   offset: CGFloat = 6
+ ) -> some View {
+return self
+     .shadow(
+       color: .shadow, radius: radius, x: -offset, y: -offset)
+     .shadow(
+        color:.hightlight, radius: radius, x: offset, y: offset)
+}
 }

@@ -37,57 +37,64 @@ struct ContentView: View {
     @State var guess: RGB
     var target = RGB.random()
     @State var showScore = false
+    let circleSize: CGFloat = 0.275
+    let labelHeight: CGFloat = 0.06
+    let labelWidth: CGFloat = 0.53
+    let buttonWidth: CGFloat = 0.87
+    
   var body: some View {
-      VStack{
-          ColorCircle(rgb:game.target, size: 250)
-          if !showScore {
-              Text("R: ??? G: ??? B: ???")
-          }else{
-              Text(guess.intString())
-                  .padding()
-          }
-          ColorCircle(rgb: guess, size: 250)
-          Text(
-            "R: \(Int(guess.red * 255.0))"
-            + "  R: \(Int(guess.green * 255.0))"
-            + "  B: \(Int(guess.blue * 255.0))"
-          )
-              .padding()
-          
-          ColorSlider(value: $guess.red, trackColor: .red)
-          ColorSlider(value: $guess.green, trackColor: .green)
-          ColorSlider(value: $guess.blue, trackColor: .blue)
-          Button("Hit Me!") {
-              showScore = true
-              game.check(guess: guess)
-          }
-          //When button click the ALERT will POP up
-          .alert(isPresented: $showScore){
-              //Alert object
-              Alert(
-              title: Text("Your Score"),
-              message: Text(String(game.scoreRound)),
-              dismissButton: .default(Text("OK")){
-                  game.startNewRound()
-                  guess = RGB()
+      GeometryReader { proxy in
+          VStack{
+              ColorCircle(rgb:game.target, size: proxy.size.height * circleSize)
+              if !showScore {
+                  BevelText(text: "R: ??? G: ??? B: ???", width: proxy.size.width * labelWidth, height: proxy.size.height * labelHeight)
+              }else{
+                  BevelText(text: game.target.intString(), width: proxy.size.width * labelWidth, height: proxy.size.height * labelHeight)
+    //              Text(guess.intString())
+    //                  .padding()
               }
-              )
+              ColorCircle(rgb: guess, size: proxy.size.height * circleSize)
+              BevelText(text: guess.intString(), width: proxy.size.width * labelWidth, height: proxy.size.height * labelHeight)
+    //          Text(
+    //            "R: \(Int(guess.red * 255.0))"
+    //            + "  R: \(Int(guess.green * 255.0))"
+    //            + "  B: \(Int(guess.blue * 255.0))"
+    //          )
+                  .padding()
+              
+              ColorSlider(value: $guess.red, trackColor: .red)
+              ColorSlider(value: $guess.green, trackColor: .green)
+              ColorSlider(value: $guess.blue, trackColor: .blue)
+              Button("Hit Me!") {
+                  showScore = true
+                  game.check(guess: guess)
+              }
+              //When button click the ALERT will POP up
+              .alert(isPresented: $showScore){
+                  //Alert object
+                  Alert(
+                  title: Text("Your Score"),
+                  message: Text(String(game.scoreRound)),
+                  dismissButton: .default(Text("OK")){
+                      game.startNewRound()
+                      guess = RGB()
+                  }
+                  )
+              }
+              .buttonStyle(NeuButtonStyle(width: proxy.size.width * buttonWidth, height: proxy.size.height * labelHeight))
+              
           }
-          .frame(width: 327, height: 48)
-          .background(
-            Capsule().fill(Color.element)
-                .northWestShadow()
-          )
-          
+          .font(.headline)
       }
-      
     
   }
 }
 
 struct ContentView_Previews: PreviewProvider {
   static var previews: some View {
-      ContentView(guess: RGB(red: 0.3, green: 0.3, blue: 0.7))
+//      ContentView(guess: RGB(red: 0.3, green: 0.3, blue: 0.7))
+      ContentView(guess: RGB())
+        .previewDevice("iPhone 8")
   }
 }
 
@@ -104,5 +111,7 @@ struct ColorSlider: View {
             Text("255")
         }
         .padding(.horizontal)
+        .font(.subheadline)
+       // .preferredColorScheme(.dark)
     }
 }
